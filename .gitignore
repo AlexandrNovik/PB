@@ -47,3 +47,14 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+target/**
+target/generated-sources/annotations/
+target/generated-sources/kapt/compile/aliak/dev/dagger/AppModule_ProvidePostExecutionThreadFactory.java
+target/generated-sources/kapt/compile/aliak/dev/dagger/AppModule_ProvideThreadExecutorFactory.java
+target/generated-sources/kapt/compile/aliak/dev/domain/
+target/kaptStubs/compile/aliak/dev/dagger/AppModule.java
+target/kaptStubs/compile/aliak/dev/domain/cards/
+target/kaptStubs/compile/aliak/dev/domain/executors/
+target/kaptStubs/compile/aliak/dev/domain/game/
+target/kaptStubs/compile/aliak/dev/domain/interactions/
+target/kaptStubs/compile/aliak/dev/domain/player/
