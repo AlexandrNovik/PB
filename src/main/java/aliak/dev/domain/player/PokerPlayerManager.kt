@@ -1,5 +1,7 @@
 package aliak.dev.domain.player
 
+import aliak.dev.extensions.log
+import rx.Observable
 import rx.subjects.BehaviorSubject
 import java.util.*
 import javax.inject.Inject
@@ -20,12 +22,18 @@ class PokerPlayerManager @Inject constructor() : PlayerManger {
     }
 
     override fun addPlayer(player: BasePlayer) {
+        log("${player.name} was added")
         actionSubject.onNext(Action.AddPlayerAction(player))
     }
 
     override fun removePlayer(player: BasePlayer) {
+        log("${player.name} was removed")
         actionSubject.onNext(Action.RemovePlayerAction(player))
     }
+
+    fun getPlayers() = state.value.players
+
+    fun observeState(): Observable<PlayerState> = state.asObservable()
 
     data class PlayerState(val players: HashSet<BasePlayer> = HashSet(),
                            var modifiedPlayer: BasePlayer? = null,

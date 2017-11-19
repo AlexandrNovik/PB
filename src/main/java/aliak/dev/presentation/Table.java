@@ -1,11 +1,22 @@
 package aliak.dev.presentation;
 
+import aliak.dev.dagger.DaggerProvider;
+import aliak.dev.domain.player.PokerPlayerManager;
+
+import javax.inject.Inject;
 import javax.swing.*;
 
 /**
  * Created by Alex on 28.10.2017.
  */
 public class Table {
+    @Inject
+    public PokerPlayerManager playerManager;
+
+    public Table() {
+        DaggerProvider.Companion.getProvider().getAppComponent().inject(this);
+    }
+
     private JPanel container;
     private JLabel tvPlayerName4;
     private JLabel tvPlayerName5;
