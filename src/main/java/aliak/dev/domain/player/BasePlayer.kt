@@ -12,4 +12,7 @@ open class BasePlayer(val name: String = "NoName") {
             position = Position.ShortHandedPosition(TablePosition.UTG_1)
         }
     }
+
+    override fun toString(): String =
+            "Player(name='$name', position=$position, seatPosition=$seatPosition)"
 }

@@ -3,7 +3,7 @@ package aliak.dev.domain.game
 import aliak.dev.domain.player.BasePlayer
 
 interface Dealer {
-    fun startGame(players: List<BasePlayer>)
+    fun startGame()
     fun shuffleDeck()
     fun startRound()
     fun startMove(player: BasePlayer)

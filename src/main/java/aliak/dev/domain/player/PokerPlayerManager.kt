@@ -1,5 +1,7 @@
 package aliak.dev.domain.player
 
+import aliak.dev.domain.game.Position
+import aliak.dev.domain.game.TablePosition
 import aliak.dev.extensions.log
 import rx.Observable
 import rx.subjects.BehaviorSubject
@@ -31,11 +33,16 @@ class PokerPlayerManager @Inject constructor() : PlayerManger {
         actionSubject.onNext(Action.RemovePlayerAction(player))
     }
 
+    override fun assignPositions() {
+        log("Assign positions")
+        actionSubject.onNext(Action.AssignShortPositionsAction())
+    }
+
     fun getPlayers() = state.value.players
 
     fun observeState(): Observable<PlayerState> = state.asObservable()
 
-    data class PlayerState(val players: HashSet<BasePlayer> = HashSet(),
+    data class PlayerState(var players: HashSet<BasePlayer> = HashSet(),
                            var modifiedPlayer: BasePlayer? = null,
                            var added: Boolean = false,
                            var removed: Boolean = false)
@@ -63,7 +70,24 @@ class PokerPlayerManager @Inject constructor() : PlayerManger {
                     added = false
                 }
             }
+        }
 
+        class AssignShortPositionsAction : Action() {
+            override fun execute(state: PlayerState): PlayerState {
+                return state.copy().apply {
+                    var prevPosition: Position = Position.ShortHandedPosition(TablePosition.UTG_1)
+                    val pl = players.toList().sortedBy { basePlayer -> basePlayer.seatPosition }
+                    pl.forEach {
+                        if (it.seatPosition == 1) {
+                            it.position = Position.ShortHandedPosition(TablePosition.UTG_1)
+                        } else {
+                            it.position = Position.ShortHandedPosition(prevPosition.next())
+                            prevPosition = Position.ShortHandedPosition(prevPosition.next())
+                        }
+                    }
+                    players = pl.toHashSet()
+                }
+            }
         }
     }
 }

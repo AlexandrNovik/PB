@@ -3,9 +3,10 @@ package aliak.dev.domain.game
 import aliak.dev.domain.game.PositionType.*
 import aliak.dev.domain.game.TablePosition.*
 
-abstract sealed class Position(val position: TablePosition) {
+abstract sealed class Position constructor(val position: TablePosition) {
     fun next(): TablePosition = nextPosition(position)
     abstract fun nextPosition(position: TablePosition): TablePosition
+    override fun toString(): String = "Position(position=$position)"
 
     class FullRingPosition(position: TablePosition) : Position(position) {
         private val map = hashMapOf(
@@ -34,6 +35,7 @@ abstract sealed class Position(val position: TablePosition) {
 
         override fun nextPosition(position: TablePosition): TablePosition = map[position]!!
     }
+
 }
 
 enum class TablePosition(val type: PositionType) {

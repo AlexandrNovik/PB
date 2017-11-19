@@ -20,9 +20,9 @@ class GameDealer : Dealer {
 
     fun observeDealerState(): Observable<DealerState> = state.asObservable()
 
-    override fun startGame(players: List<BasePlayer>) {
+    override fun startGame() {
         log("Game started")
-        action.onNext(DealerAction.StartGameAction(players))
+        action.onNext(DealerAction.StartGameAction())
     }
 
     override fun shuffleDeck() {
@@ -77,15 +77,13 @@ class GameDealer : Dealer {
 
     abstract sealed class DealerAction {
         abstract fun execute(state: DealerState): DealerState
-        class StartGameAction(private val players: List<BasePlayer>) : DealerAction() {
+        class StartGameAction : DealerAction() {
             override fun execute(state: DealerState) = DealerState(
-                    players = players,
                     gameStarted = true)
         }
 
         class StartRoundAction : DealerAction() {
             override fun execute(state: DealerState) = DealerState(
-                    players = state.players,
                     gameStarted = state.gameStarted)
         }
 
@@ -128,8 +126,7 @@ class GameDealer : Dealer {
         }
     }
 
-    data class DealerState(var players: List<BasePlayer> = emptyList(),
-                           var activePlayer: BasePlayer = BasePlayer.EmptyPlayer(),
+    data class DealerState(var activePlayer: BasePlayer = BasePlayer.EmptyPlayer(),
                            var startMove: Boolean = false,
                            var gameStage: GameStage = GameStage.PRE_FLOP,
                            var deckShuffled: Boolean = false,
